@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>占い師と話してわかった。</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #f5f0e8;
+    color: #1a1a2e;
+    font-family: 'Noto Serif JP', serif;
+    line-height: 1.9;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ===== COVER ===== */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 60px 24px;
+    background: #0f0f1a;
+    overflow: hidden;
+  }
+
+  .cover-stars {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .star {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle var(--d) ease-in-out infinite var(--delay);
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: var(--op); }
+  }
+
+  .cover-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    color: #c8a96e;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: #f5f0e8;
+    letter-spacing: 0.08em;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-subtitle {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 10px;
+    color: #c8a96e;
+    letter-spacing: 0.1em;
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+    font-weight: 300;
+    max-width: 320px;
+    line-height: 1.8;
+  }
+
+  .cover-divider {
+    width: 60px;
+    height: 1px;
+    background: #c8a96e;
+    margin: 0 auto 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-intro {
+    font-size: 14px;
+    color: #c8c4bc;
+    letter-spacing: 0.08em;
+    line-height: 2.2;
+    max-width: 320px;
+    position: relative;
+    z-index: 1;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+  }
+
+  .cover-handle {
+    position: absolute;
+    bottom: 32px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: #c8a96e;
+    letter-spacing: 0.3em;
+    z-index: 1;
+  }
+
+  /* ===== STORY SECTION ===== */
+  .section {
+    padding: 72px 24px;
+    max-width: 680px;
+    margin: 0 auto;
+    background: #1a1a2e;
+  }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    color: #c8a96e;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .story-text {
+    font-size: 15px;
+    color: #e8e4dc;
+    line-height: 2.1;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  .dialog-block {
+    border-left: 3px solid #c8a96e;
+    padding: 16px 24px;
+    margin: 24px 0;
+    background: rgba(200, 169, 110, 0.08);
+  }
+
+  .dialog-speaker {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: #c8a96e;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+  }
+
+  .dialog-text {
+    font-size: 15px;
+    color: #f0ece4;
+    line-height: 2;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .my-dialog {
+    border-left: 3px solid #888880;
+    padding: 16px 24px;
+    margin: 24px 0;
+    background: rgba(136, 136, 128, 0.1);
+  }
+
+  .my-dialog .dialog-speaker {
+    color: #aaaaaa;
+    font-weight: 700;
+  }
+
+  .my-dialog .dialog-text {
+    color: #f0ece4;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  /* ===== DIAGRAM SECTION ===== */
+  .diagram-section {
+    background: #0f0f1a;
+    padding: 72px 24px;
+  }
+
+  .diagram-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .diagram-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #f5f0e8;
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin-bottom: 48px;
+  }
+
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .flow-item {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+  }
+
+  .flow-box {
+    border: 1px solid #2a2a4a;
+    padding: 20px 28px;
+    text-align: center;
+    position: relative;
+    background: #13131f;
+    transition: all 0.3s;
+  }
+
+  .flow-box.highlight {
+    border-color: #c8a96e;
+    background: rgba(200, 169, 110, 0.08);
+  }
+
+  .flow-box.danger {
+    border-color: #6a2a2a;
+    background: rgba(106, 42, 42, 0.1);
+  }
+
+  .flow-box.solution {
+    border-color: #2a6a4a;
+    background: rgba(42, 106, 74, 0.1);
+  }
+
+  .flow-tag {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin-bottom: 8px;
+    color: #c8a96e;
+  }
+
+  .flow-tag.danger { color: #c86e6e; }
+  .flow-tag.solution { color: #6ec8a0; }
+
+  .flow-text {
+    font-size: 14px;
+    color: #e8e4dc;
+    line-height: 1.9;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+  }
+
+  .flow-text strong {
+    color: #f5d080;
+    font-weight: 700;
+  }
+
+  .flow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+  }
+
+  .flow-arrow-line {
+    width: 1px;
+    height: 24px;
+    background: #2a2a4a;
+  }
+
+  .flow-arrow-head {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid #2a2a4a;
+  }
+
+  .flow-arrow.gold .flow-arrow-line { background: #c8a96e; }
+  .flow-arrow.gold .flow-arrow-head { border-top-color: #c8a96e; }
+  .flow-arrow.danger .flow-arrow-line { background: #6a2a2a; }
+  .flow-arrow.danger .flow-arrow-head { border-top-color: #6a2a2a; }
+
+  /* ===== KEY MESSAGE ===== */
+  .message-section {
+    padding: 72px 24px;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+    background: #1a1a2e;
+  }
+
+  .message-quote {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: #f0ece4;
+    line-height: 1.9;
+    letter-spacing: 0.08em;
+    margin-bottom: 32px;
+  }
+
+  .message-accent {
+    color: #f5d080;
+    font-weight: 700;
+  }
+
+  .message-divider {
+    width: 40px;
+    height: 1px;
+    background: #c8a96e;
+    margin: 32px auto;
+  }
+
+  .message-sub {
+    font-size: 14px;
+    color: #c8c4bc;
+    line-height: 2.4;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== CLOSING ===== */
+  .closing {
+    background: #0f0f1a;
+    padding: 64px 24px;
+    text-align: center;
+  }
+
+  .closing-text {
+    font-size: 14px;
+    color: #c8c4bc;
+    line-height: 2.4;
+    letter-spacing: 0.08em;
+    margin-bottom: 32px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+  }
+
+  .closing-handle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    color: #c8a96e;
+    letter-spacing: 0.4em;
+  }
+
+  .hr {
+    width: 60px;
+    height: 1px;
+    background: #c8a96e;
+    margin: 40px auto;
+    opacity: 0.5;
+  }
+
+  @media print {
+    .cover { page-break-after: always; }
+    .diagram-section { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-stars" id="stars"></div>
+  <div class="cover-label">secret story</div>
+  <div class="cover-title">極秘情報</div>
+  <div class="cover-subtitle">占い師と話してわかった。〜 引き寄せの本質と引き寄せ難民爆増の理由 〜</div>
+  <div class="cover-divider"></div>
+  <div class="cover-intro">
+    引き寄せが上手くいかない理由は<br>
+    方法じゃなかった。<br>
+    ある占い師との対話で<br>
+    全部わかった。
+  </div>
+  <div class="cover-handle">@dara_dara_fairy</div>
+</div>
+
+<!-- STORY -->
+<div class="section">
+  <div class="section-label">the story</div>
+
+  <p class="story-text">
+    これは僕が引き寄せで人生が変わり始めてすぐの話。
+  </p>
+
+  <p class="story-text">
+    東京に仕事で行った際、とある占い師さんと話すことになった。
+  </p>
+
+  <p class="story-text">
+    もう70代らしいが、とてもそうとは思えないほど身体中からエネルギーを感じ、鋭い眼光を持つ方だった。
+  </p>
+
+  <p class="story-text">
+    当時の僕は、引き寄せによって人生が変わったという実感はあった。でも、なぜ上手くいったのかという理由だけがわからなかった。
+  </p>
+
+  <p class="story-text">
+    だから素直にこう聞いてみた。
+  </p>
+
+  <div class="my-dialog">
+    <div class="dialog-speaker">僕</div>
+    <div class="dialog-text">「僕が引き寄せられるようになったのはなぜなんでしょうか？」</div>
+  </div>
+
+  <div class="dialog-block">
+    <div class="dialog-speaker">占い師</div>
+    <div class="dialog-text">「お前さんにあった気持ちの鎮め方が分かっただけじゃよ」</div>
+  </div>
+
+  <div class="my-dialog">
+    <div class="dialog-speaker">僕</div>
+    <div class="dialog-text">「どういうことですか？」</div>
+  </div>
+
+  <div class="dialog-block">
+    <div class="dialog-speaker">占い師</div>
+    <div class="dialog-text">「引き寄せってのは本来、正しいやり方なんてないんじゃ。本当に必要なのは状態や感情。初期の方はよかった。心地よさやワクワク、楽しさ。それらを先取りすれば良いと。これは何も間違っとらん。」</div>
+  </div>
+
+  <div class="dialog-block">
+    <div class="dialog-speaker">占い師</div>
+    <div class="dialog-text">「じゃが、それでは伝わらんと思ったのか、そうなるための『手段』を伝え始めた。これが間違いなんじゃ。」</div>
+  </div>
+
+  <div class="dialog-block">
+    <div class="dialog-speaker">占い師</div>
+    <div class="dialog-text">「感謝ノートやアファメーション、ポジティブ思考……様々な手法が出回ったが、その度にみな迷う。そのやり方が本人の気持ちを楽にさせたりワクワクさせるどころか、上手くできない自己否定への呪いになっとる。本末転倒ってわけじゃ。」</div>
+  </div>
+
+  <div class="my-dialog">
+    <div class="dialog-speaker">僕</div>
+    <div class="dialog-text">「たしかに。僕も上手くいかせようとするのとか、頑張ろうっていう気持ちは捨てました。ただひたすら面白いなと思う方へ。周りからは努力に見えても、僕自身は楽しいことしてるだけだから苦しくない。そしていつの間にか成果もお金も、周りにいい人ばかり集まってました。」</div>
+  </div>
+
+  <div class="dialog-block">
+    <div class="dialog-speaker">占い師</div>
+    <div class="dialog-text">「そうなんじゃよ。大事なのは手段ではない。どういう状態であるか、ただそれだけなんじゃ。」</div>
+  </div>
+</div>
+
+<!-- DIAGRAM -->
+<div class="diagram-section">
+  <div class="diagram-inner">
+    <div class="diagram-title">なぜ引き寄せ難民が爆増したのか</div>
+
+    <div class="flow">
+
+      <div class="flow-item">
+        <div class="flow-box highlight">
+          <div class="flow-tag">本来の引き寄せ</div>
+          <div class="flow-text"><strong>状態・気持ち・ワクワクが先</strong><br>楽しい・心地いい・ワクワクする状態が自然に現実を引き寄せる</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow gold">
+        <div class="flow-arrow-line"></div>
+        <div class="flow-arrow-head"></div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-box">
+          <div class="flow-tag">問題の始まり</div>
+          <div class="flow-text">上手くいった人が発信<br>「この方法でうまくいった！」</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow">
+        <div class="flow-arrow-line"></div>
+        <div class="flow-arrow-head"></div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-box">
+          <div class="flow-tag">拡散</div>
+          <div class="flow-text">手段・方法として広まる<br>感謝ノート・アファメーション・369メソッド…</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow danger">
+        <div class="flow-arrow-line"></div>
+        <div class="flow-arrow-head"></div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-box danger">
+          <div class="flow-tag danger">落とし穴</div>
+          <div class="flow-text"><strong>手段だけが真似される</strong><br>状態・感情という本質は伝わらなかった</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow danger">
+        <div class="flow-arrow-line"></div>
+        <div class="flow-arrow-head"></div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-box danger">
+          <div class="flow-tag danger">自己否定ループ</div>
+          <div class="flow-text"><strong>うまくできない → 自分を責める</strong><br>余裕がなくなる → さらにできなくなる</div>
+        </div>
+      </div>
+
+      <div class="flow-arrow danger">
+        <div class="flow-arrow-line"></div>
+        <div class="flow-arrow-head"></div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-box danger">
+          <div class="flow-tag danger">結果</div>
+          <div class="flow-text"><strong>引き寄せ難民が爆増</strong><br>方法は知ってる。でも変われない。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- KEY MESSAGE -->
+<div class="message-section">
+  <div class="section-label">the essence</div>
+
+  <div class="message-quote">
+    今日でもう自分を責めるのも<br>
+    「才能がないんじゃないか、、、」<br>
+    そう思うのも終わりにしよう。
+  </div>
+
+  <div class="message-divider"></div>
+
+  <div class="message-sub">
+    やり方や順序がずれてただけ。<br>
+    あなた本来の力が取り戻せれば<br>
+    全て上手くいくようになる。<br><br>
+    続きの話はオープンチャット参加者だけに話す。<br><br>
+    <span style="color:#c8a96e; font-weight:500;">幸せへの入口は僕のプロフィールにあるよ。</span>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-text">
+    この続きは<br>
+    オープンチャットで話してます。<br><br>
+    状態を整えるための<br>
+    具体的な実践を一緒にやっていく場所。
+  </div>
+  <div class="hr"></div>
+  <div class="closing-handle">@dara_dara_fairy</div>
+</div>
+
+<script>
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.setProperty('--d', (2 + Math.random() * 5) + 's');
+    star.style.setProperty('--delay', (-Math.random() * 5) + 's');
+    star.style.setProperty('--op', (0.1 + Math.random() * 0.5));
+    starsEl.appendChild(star);
+  }
+</script>
+
+</body>
+</html>
